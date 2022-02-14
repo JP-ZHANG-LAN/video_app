@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 
 import android.view.LayoutInflater;
@@ -21,7 +22,7 @@ import com.videoapp.jpzhang.videoapp.R;
  * Use the {@link MyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MyFragment extends BaseFragment {
+public class MyFragment extends Fragment {
 
     @BindView(R.id.img_header)
     ImageView imgHeader;
@@ -35,19 +36,26 @@ public class MyFragment extends BaseFragment {
     }
 
     @Override
-    protected int initLayout() {
-        return R.layout.fragment_my;
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_my, container, false);
     }
 
-    @Override
-    protected void initView() {
-
-    }
-
-    @Override
-    protected void initData() {
-
-    }
+//    @Override
+//    protected int initLayout() {
+//        return R.layout.fragment_my;
+//    }
+//
+//    @Override
+//    protected void initView() {
+//
+//    }
+//
+//    @Override
+//    protected void initData() {
+//
+//    }
 
 //    @OnClick({R.id.img_header, R.id.rl_collect, R.id.rl_skin, R.id.rl_logout})
 //    public void onViewClicked(View view) {

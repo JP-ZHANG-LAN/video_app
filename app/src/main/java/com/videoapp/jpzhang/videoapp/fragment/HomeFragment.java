@@ -1,17 +1,21 @@
 package com.videoapp.jpzhang.videoapp.fragment;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+
+import com.flyco.tablayout.SlidingTabLayout;
+import com.google.gson.Gson;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.flyco.tablayout.SlidingTabLayout;
 import com.videoapp.jpzhang.videoapp.R;
+import com.videoapp.jpzhang.videoapp.adapter.HomeAdapter;
 
 import java.util.ArrayList;
 
@@ -23,9 +27,12 @@ import java.util.ArrayList;
  * Use the {@link MyFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends Fragment {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private String[] mTitles;
+    private final String[] mTitles = {
+            "热门","IOS","Android","前端"
+            ,"后端","设计","工具资源"
+    };
     private ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
 
@@ -37,21 +44,41 @@ public class HomeFragment extends BaseFragment {
         return fragment;
     }
 
+//    @Override
+//    protected int initLayout() {
+//        return R.layout.fragment_home;
+//    }
+//
+//    @Override
+//    protected void initView() {
+//
+//    }
+
+    @Nullable
     @Override
-    protected int initLayout() {
-        return R.layout.fragment_home;
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_home,container,false);
+        viewPager = v.findViewById(R.id.fixedViewPager);
+        slidingTabLayout = v.findViewById(R.id.slidingTabLayout);
+        return v;
     }
 
     @Override
-    protected void initView() {
-//        viewPager = mRootView.findViewById(R.id.fixedViewPager);
-        slidingTabLayout = mRootView.findViewById(R.id.slidingTabLayout);
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        for (String tittle : mTitles) {
+            mFragments.add(VideoFragment.newInstance(tittle));
+        }
+        HomeAdapter homeAdapter = new HomeAdapter(getFragmentManager(),mTitles,mFragments);
+        //更新后用的包不一样，但是不影响使用
+        viewPager.setAdapter(homeAdapter);
+        slidingTabLayout.setViewPager(viewPager);
     }
-
-    @Override
-    protected void initData() {
-//        getVideoCategoryList();
-    }
+//
+//    @Override
+//    protected void initData() {
+//       // getVideoCategoryList();
+//    }
 
 //    private void getVideoCategoryList() {
 //        HashMap<String, Object> params = new HashMap<>();

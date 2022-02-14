@@ -8,11 +8,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
 import com.videoapp.jpzhang.videoapp.MainActivity;
 import com.videoapp.jpzhang.videoapp.R;
 import com.videoapp.jpzhang.videoapp.api.Api;
 import com.videoapp.jpzhang.videoapp.api.ApiConfig;
 import com.videoapp.jpzhang.videoapp.api.TtitCallback;
+import com.videoapp.jpzhang.videoapp.entity.LoginResponse;
 import com.videoapp.jpzhang.videoapp.util.AppConfig;
 import com.videoapp.jpzhang.videoapp.util.StringUtils;
 
@@ -60,12 +62,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_login:
-//                String saccount = account.getText().toString().trim();
-//                String spwd = pwd.getText().toString().trim();
-//                dologin(saccount,spwd);
+                String saccount = account.getText().toString().trim();
+                String spwd = pwd.getText().toString().trim();
+                dologin(saccount,spwd);
 //                Intent intent1 = new Intent(LoginActivity.this,HomeActivity.class);
 //                startActivity(intent1);
-                navigateTo(HomeActivity.class);
+//                navigateTo(HomeActivity.class);
         }
     }
 
@@ -80,27 +82,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         map.put("mobile",account);
         map.put("password",pwd);
         //封装后的请求方法
-//        Api.config(ApiConfig.LOGIN,map).postRequest(this, new TtitCallback() {
-//            @Override
-//            public void onSuccess(String res) {
-//                final String s = res;
-//                Log.e("===============请求成功",res);
-//                //异步请求相当于开辟一个子线程，要对主线程ui进行操作就需要再回到主线程，也可以用handle处理
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        showToast(s);
-//                    }
-//                });
-//                navigateTo(HomeActivity.class);
-//            }
-//            @Override
-//            public void onFailure(Exception e) {
-//                Log.e("===============请求失败",e.getMessage());
-//                showToast("用户名或密码错误");
-//            }
-//        });
-
+        Api.config(ApiConfig.LOGIN,map).postRequest(this, new TtitCallback() {
+            @Override
+            public void onSuccess(String res) {
+                final String s = res;
+                Log.e("===============请求成功",res);
+                Gson gson = new Gson();
+                LoginResponse loginResponse = gson.fromJson(res, LoginResponse.class);
+                if (loginResponse.getCode() == 0) {
+                    String token = loginResponse.getToken();
+                    insertVal("token", token);
+                }
+                //异步请求相当于开辟一个子线程，要对主线程ui进行操作就需要再回到主线程，也可以用handle处理
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(s);
+                    }
+                });
+                navigateTo(HomeActivity.class);
+            }
+            @Override
+            public void onFailure(Exception e) {
+                Log.e("===============请求失败",e.getMessage());
+                showToast("用户名或密码错误");
+            }
+        });
         //封装前的请求方式
 //        // 将map转换为json再转换为string放到请求体中
 //        JSONObject jsonObject = new JSONObject(map);

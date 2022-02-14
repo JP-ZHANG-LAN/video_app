@@ -9,7 +9,7 @@
     android:orientation="vertical"
     tools:context=".activity.HomeActivity">
 
-    <androidx.viewpager.widget.ViewPager
+    <com.videoapp.jpzhang.videoapp.view.FixedViewPager
         android:id="@+id/viewpager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

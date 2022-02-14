@@ -50,18 +50,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 //        startActivity(in);
 //    }
 
-//    protected void insertVal(String key, String val) {
-//        SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sp.edit();
-//        editor.putString(key, val);
-//        editor.commit();
-//    }
-//
-//    protected String findByKey(String key) {
-//        SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);
-//        return sp.getString(key, "");
-//    }
-//
+    protected void insertVal(String key, String val) {
+        SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString(key, val);
+        editor.commit();
+    }
+
+    protected String findByKey(String key) {
+        SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);
+        return sp.getString(key, "");
+    }
+
 //    protected VideoViewManager getVideoViewManager() {
 //        return VideoViewManager.instance();
 //    }

@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.dueeeke.videoplayer.player.VideoViewManager;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
@@ -25,7 +27,7 @@ import static android.content.Context.MODE_PRIVATE;
  **/
 public abstract class BaseFragment extends Fragment {
     protected View mRootView;
-    private Unbinder unbinder;
+//    private Unbinder unbinder;
 
     @Nullable
     @Override
@@ -34,7 +36,7 @@ public abstract class BaseFragment extends Fragment {
             mRootView = inflater.inflate(initLayout(), container, false);
             initView();
         }
-        unbinder = ButterKnife.bind(this, mRootView);
+//        unbinder = ButterKnife.bind(this, mRootView);
         return mRootView;
     }
 
@@ -47,7 +49,7 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+//        unbinder.unbind();
     }
 
     protected abstract int initLayout();
@@ -102,7 +104,7 @@ public abstract class BaseFragment extends Fragment {
         edit.commit();
     }
 
-//    protected VideoViewManager getVideoViewManager() {
-//        return VideoViewManager.instance();
-//    }
+    protected VideoViewManager getVideoViewManager() {
+        return VideoViewManager.instance();
+    }
 }

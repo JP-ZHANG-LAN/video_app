@@ -2,12 +2,20 @@ package com.videoapp.jpzhang.videoapp.api;
 
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+import com.videoapp.jpzhang.videoapp.activity.LoginActivity;
+import com.videoapp.jpzhang.videoapp.util.StringUtils;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -67,58 +75,58 @@ public class Api {
             }
         });
     }
-//
-//    public void getRequest(Context context, final TtitCallback callback) {
-//        SharedPreferences sp = context.getSharedPreferences("sp_ttit", MODE_PRIVATE);
-//        String token = sp.getString("token", "");
-//        String url = getAppendUrl(requestUrl, mParams);
-//        Request request = new Request.Builder()
-//                .url(url)
-//                .addHeader("token", token)
-//                .get()
-//                .build();
-//        Call call = client.newCall(request);
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                Log.e("onFailure", e.getMessage());
-//                callback.onFailure(e);
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                final String result = response.body().string();
-//                try {
-//                    JSONObject jsonObject = new JSONObject(result);
-//                    String code = jsonObject.getString("code");
-//                    if (code.equals("401")) {
-//                        Intent in = new Intent(context, LoginActivity.class);
-//                        context.startActivity(in);
-//                    }
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//                callback.onSuccess(result);
-//            }
-//        });
-//    }
-//
-//    private String getAppendUrl(String url, Map<String, Object> map) {
-//        if (map != null && !map.isEmpty()) {
-//            StringBuffer buffer = new StringBuffer();
-//            Iterator<Entry<String, Object>> iterator = map.entrySet().iterator();
-//            while (iterator.hasNext()) {
-//                Entry<String, Object> entry = iterator.next();
-//                if (StringUtils.isEmpty(buffer.toString())) {
-//                    buffer.append("?");
-//                } else {
-//                    buffer.append("&");
-//                }
-//                buffer.append(entry.getKey()).append("=").append(entry.getValue());
-//            }
-//            url += buffer.toString();
-//        }
-//        return url;
-//    }
+
+    public void getRequest(Context context, final TtitCallback callback) {
+        SharedPreferences sp = context.getSharedPreferences("sp_ttit", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
+        String url = getAppendUrl(requestUrl, mParams);
+        Request request = new Request.Builder()
+                .url(url)
+                .addHeader("token", token)
+                .get()
+                .build();
+        Call call = client.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                Log.e("onFailure", e.getMessage());
+                callback.onFailure(e);
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String result = response.body().string();
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    String code = jsonObject.getString("code");
+                    if (code.equals("401")) {
+                        Intent in = new Intent(context, LoginActivity.class);
+                        context.startActivity(in);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onSuccess(result);
+            }
+        });
+    }
+
+    private String getAppendUrl(String url, Map<String, Object> map) {
+        if (map != null && !map.isEmpty()) {
+            StringBuffer buffer = new StringBuffer();
+            Iterator<Map.Entry<String, Object>> iterator = map.entrySet().iterator();
+            while (iterator.hasNext()) {
+                Map.Entry<String, Object> entry = iterator.next();
+                if (StringUtils.isEmpty(buffer.toString())) {
+                    buffer.append("?");
+                } else {
+                    buffer.append("&");
+                }
+                buffer.append(entry.getKey()).append("=").append(entry.getValue());
+            }
+            url += buffer.toString();
+        }
+        return url;
+    }
 }
 
