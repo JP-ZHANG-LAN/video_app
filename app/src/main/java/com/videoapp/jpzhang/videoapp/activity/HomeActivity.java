@@ -10,10 +10,12 @@ import com.flyco.tablayout.listener.CustomTabEntity;
 import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.videoapp.jpzhang.videoapp.R;
 import com.videoapp.jpzhang.videoapp.adapter.MyPagerAdapter;
+import com.videoapp.jpzhang.videoapp.entity.NewsEntity;
 import com.videoapp.jpzhang.videoapp.entity.TabEntity;
 import com.videoapp.jpzhang.videoapp.fragment.CollectFragment;
 import com.videoapp.jpzhang.videoapp.fragment.HomeFragment;
 import com.videoapp.jpzhang.videoapp.fragment.MyFragment;
+import com.videoapp.jpzhang.videoapp.fragment.NewsFragment;
 
 import java.util.ArrayList;
 
@@ -47,7 +49,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     protected void initData() {
         mFragments.add(HomeFragment.newInstance());
-        mFragments.add(CollectFragment.newInstance());
+        mFragments.add(NewsFragment.newInstance());
         mFragments.add(MyFragment.newInstance());
         for (int i = 0; i < mTitles.length; i++) {
             mTabEntities.add(new TabEntity(mTitles[i], mIconSelectIds[i], mIconUnselectIds[i]));

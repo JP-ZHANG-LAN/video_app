@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="途途IT学堂"
+                    android:text="环珮"
                     android:textColor="@color/skin_text_white"
                     android:textSize="16sp" />
 

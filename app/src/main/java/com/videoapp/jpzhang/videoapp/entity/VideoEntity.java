@@ -37,7 +37,7 @@ public class VideoEntity implements Serializable {
     private String updateTime;
     private int categoryId;
     private String categoryName;
-    private Object videoSocialEntity;
+    private VideoSocialEntity videoSocialEntity;
 
     public int getVid() {
         return vid;
@@ -143,11 +143,65 @@ public class VideoEntity implements Serializable {
         this.categoryName = categoryName;
     }
 
-    public Object getVideoSocialEntity() {
+    public VideoSocialEntity getVideoSocialEntity() {
         return videoSocialEntity;
     }
 
-    public void setVideoSocialEntity(Object videoSocialEntity) {
+    public void setVideoSocialEntity(VideoSocialEntity videoSocialEntity) {
         this.videoSocialEntity = videoSocialEntity;
+    }
+
+    public static class VideoSocialEntity {
+        /**
+         * commentnum : 103
+         * likenum : 121
+         * collectnum : 220
+         */
+
+        private int commentnum;
+        private int likenum;
+        private int collectnum;
+        private boolean flagLike;
+        private boolean flagCollect;
+
+        public int getCommentnum() {
+            return commentnum;
+        }
+
+        public void setCommentnum(int commentnum) {
+            this.commentnum = commentnum;
+        }
+
+        public int getLikenum() {
+            return likenum;
+        }
+
+        public void setLikenum(int likenum) {
+            this.likenum = likenum;
+        }
+
+        public int getCollectnum() {
+            return collectnum;
+        }
+
+        public void setCollectnum(int collectnum) {
+            this.collectnum = collectnum;
+        }
+
+        public boolean isFlagLike() {
+            return flagLike;
+        }
+
+        public void setFlagLike(boolean flagLike) {
+            this.flagLike = flagLike;
+        }
+
+        public boolean isFlagCollect() {
+            return flagCollect;
+        }
+
+        public void setFlagCollect(boolean flagCollect) {
+            this.flagCollect = flagCollect;
+        }
     }
 }

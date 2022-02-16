@@ -16,24 +16,20 @@ import android.view.ViewGroup;
 
 import com.videoapp.jpzhang.videoapp.R;
 import com.videoapp.jpzhang.videoapp.adapter.HomeAdapter;
+import com.videoapp.jpzhang.videoapp.api.Api;
+import com.videoapp.jpzhang.videoapp.api.ApiConfig;
+import com.videoapp.jpzhang.videoapp.api.TtitCallback;
+import com.videoapp.jpzhang.videoapp.entity.CategoryEntity;
+import com.videoapp.jpzhang.videoapp.entity.VideoCategoryResponse;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MyFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MyFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
     private ArrayList<Fragment> mFragments = new ArrayList<>();
-    private final String[] mTitles = {
-            "热门","IOS","Android","前端"
-            ,"后端","设计","工具资源"
-    };
-    private ViewPager viewPager;
+    private  String[] mTitles;
+    ViewPager viewPager;
     private SlidingTabLayout slidingTabLayout;
 
     public HomeFragment() {
@@ -44,71 +40,65 @@ public class HomeFragment extends Fragment {
         return fragment;
     }
 
-//    @Override
-//    protected int initLayout() {
-//        return R.layout.fragment_home;
-//    }
-//
-//    @Override
-//    protected void initView() {
-//
-//    }
-
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home,container,false);
-        viewPager = v.findViewById(R.id.fixedViewPager);
-        slidingTabLayout = v.findViewById(R.id.slidingTabLayout);
-        return v;
+    protected int initLayout() {
+        return R.layout.fragment_home;
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        for (String tittle : mTitles) {
-            mFragments.add(VideoFragment.newInstance(tittle));
-        }
-        HomeAdapter homeAdapter = new HomeAdapter(getFragmentManager(),mTitles,mFragments);
-        //更新后用的包不一样，但是不影响使用
-        viewPager.setAdapter(homeAdapter);
-        slidingTabLayout.setViewPager(viewPager);
+    protected void initView() {
+        viewPager = mRootView.findViewById(R.id.fixedViewPager);
+        slidingTabLayout = mRootView.findViewById(R.id.slidingTabLayout);
     }
+
 //
 //    @Override
-//    protected void initData() {
-//       // getVideoCategoryList();
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        for (String tittle : mTitles) {
+//            mFragments.add(VideoFragment.newInstance(tittle));
+//        }
+//        HomeAdapter homeAdapter = new HomeAdapter(getFragmentManager(),mTitles,mFragments);
+//        //更新后用的包不一样，但是不影响使用
+//        viewPager.setAdapter(homeAdapter);
+//        slidingTabLayout.setViewPager(viewPager);
 //    }
 
-//    private void getVideoCategoryList() {
-//        HashMap<String, Object> params = new HashMap<>();
-//        Api.config(ApiConfig.VIDEO_CATEGORY_LIST, params).getRequest(getActivity(), new TtitCallback() {
-//            @Override
-//            public void onSuccess(final String res) {
-//                getActivity().runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        VideoCategoryResponse response = new Gson().fromJson(res, VideoCategoryResponse.class);
-//                        if (response != null && response.getCode() == 0) {
-//                            List<CategoryEntity> list = response.getPage().getList();
-//                            if (list != null && list.size() > 0) {
-//                                mTitles = new String[list.size()];
-//                                for (int i = 0; i < list.size(); i++) {
-//                                    mTitles[i] = list.get(i).getCategoryName();
-//                                    mFragments.add(VideoFragment.newInstance(list.get(i).getCategoryId()));
-//                                }
-//                                viewPager.setOffscreenPageLimit(mFragments.size());
-//                                viewPager.setAdapter(new HomeAdapter(getFragmentManager(), mTitles, mFragments));
-//                                slidingTabLayout.setViewPager(viewPager);
-//                            }
-//                        }
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Exception e) {
-//            }
-//        });
-//    }
+    @Override
+    protected void initData() {
+        getVideoCategoryList();
+    }
+
+    private void getVideoCategoryList() {
+        HashMap<String, Object> params = new HashMap<>();
+        Api.config(ApiConfig.VIDEO_CATEGORY_LIST, params).getRequest(getActivity(), new TtitCallback() {
+            @Override
+            public void onSuccess(final String res) {
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        VideoCategoryResponse response = new Gson().fromJson(res, VideoCategoryResponse.class);
+                        if (response != null && response.getCode() == 0) {
+                            List<CategoryEntity> list = response.getPage().getList();
+                            if (list != null && list.size() > 0) {
+                                mTitles = new String[list.size()];
+                                for (int i = 0; i < list.size(); i++) {
+                                    mTitles[i] = list.get(i).getCategoryName();
+                                    mFragments.add(VideoFragment.newInstance(list.get(i).getCategoryId()));
+                                }
+                                viewPager.setOffscreenPageLimit(mFragments.size());
+                                viewPager.setAdapter(new HomeAdapter(getFragmentManager(), mTitles, mFragments));
+                                //更新后viewpager用的包不一样，但是不影响使用
+                                slidingTabLayout.setViewPager(viewPager);
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+            }
+        });
+    }
 }

@@ -6,8 +6,10 @@ import android.view.View;
 import android.widget.Button;
 
 import com.videoapp.jpzhang.videoapp.activity.BaseActivity;
+import com.videoapp.jpzhang.videoapp.activity.HomeActivity;
 import com.videoapp.jpzhang.videoapp.activity.LoginActivity;
 import com.videoapp.jpzhang.videoapp.activity.RegisterActivity;
+import com.videoapp.jpzhang.videoapp.util.StringUtils;
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
 
@@ -26,7 +28,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initData() {
-
+        String token = findByKey("token");
+        if (!StringUtils.isEmpty(token)) {
+//            navigateToWithFlag(HomeActivity.class,
+//                    Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//            showToast("登录成功");
+            navigateTo(HomeActivity.class);
+            finish();
+        }
     }
 
     @Override

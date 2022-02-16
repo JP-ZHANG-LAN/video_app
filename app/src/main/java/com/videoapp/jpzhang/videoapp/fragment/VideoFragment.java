@@ -54,7 +54,7 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
 //
 //    }
 
-    private String tittle;
+    private int categoryId;
     private RecyclerView recyclerView;
     private RefreshLayout refreshLayout;
     private int pageNum = 1;
@@ -74,19 +74,19 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
      * 上次播放的位置，用于页面切回来之后恢复播放
      */
     protected int mLastPos = mCurPos;
-//
-//    private Handler mHandler = new Handler() {
-//        @Override
-//        public void handleMessage(@NonNull Message msg) {
-//            super.handleMessage(msg);
-//            switch (msg.what) {
-//                case 0:
-//                    videoAdapter.setDatas(datas);
-//                    videoAdapter.notifyDataSetChanged();
-//                    break;
-//            }
-//        }
-//    };
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case 0:
+                    videoAdapter.setDatas(datas);
+                    videoAdapter.notifyDataSetChanged();
+                    break;
+            }
+        }
+    };
 //
 //    public VideoFragment() {
 //    }
@@ -154,25 +154,22 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
     }
 
 
-    public static VideoFragment newInstance(String tittle) {
-        VideoFragment fragment = new VideoFragment();
-        fragment.tittle = tittle;
-        return fragment;
-    }
+//    public static VideoFragment newInstance(String tittle) {
+//        VideoFragment fragment = new VideoFragment();
+//        fragment.tittle = tittle;
+//        return fragment;
+//    }
 
     public void getVideoList(Boolean isRefresh){
         String s = findByKey("token");
-        if(!StringUtils.isEmpty(s)){
             HashMap<String, Object> params = new HashMap<>();
             params.put("token",s);
             params.put("page", pageNum);
             params.put("limit", ApiConfig.PAGE_SIZE);
-            Api.config(ApiConfig.VIDEO_LIST,params).getRequest(getActivity(), new TtitCallback() {
+            params.put("categoryId",categoryId);
+            Api.config(ApiConfig.VIDEO_LIST_BY_CATEGORY,params).getRequest(getActivity(), new TtitCallback() {
                 @Override
                 public void onSuccess(String res) {
-                    getActivity().runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
                             if(isRefresh){
                                 refreshLayout.finishRefresh(true);
                             } else {
@@ -188,18 +185,15 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                                     } else {
                                         datas.addAll(list);
                                     }
-                                    videoAdapter.setDatas(datas);
-                                    videoAdapter.notifyDataSetChanged();
+                                    mHandler.sendEmptyMessage(0);
                                 } else {
                                     if (isRefresh) {
-                                        showToast("暂时无数据");
+                                        showToastSync("暂时无数据");
                                     } else {
-                                        showToast("没有更多数据");
+                                        showToastSync("没有更多数据");
                                     }
                                 }
                             }
-                        }
-                    });
                 }
 
                 @Override
@@ -211,18 +205,14 @@ public class VideoFragment extends BaseFragment implements OnItemChildClickListe
                     }
                 }
             });
-        } else {
-            navigateTo(LoginActivity.class);
-        }
-
     }
 
-//    public static VideoFragment newInstance(int categoryId) {
-//        VideoFragment fragment = new VideoFragment();
-//        fragment.categoryId = categoryId;
-//        return fragment;
-//    }
-//
+    public static VideoFragment newInstance(int categoryId) {
+        VideoFragment fragment = new VideoFragment();
+        fragment.categoryId = categoryId;
+        return fragment;
+    }
+
 
     protected void initVideoView() {
         mVideoView = new VideoView(getActivity());

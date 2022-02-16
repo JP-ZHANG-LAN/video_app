@@ -92,20 +92,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (loginResponse.getCode() == 0) {
                     String token = loginResponse.getToken();
                     insertVal("token", token);
+                    navigateToWithFlag(HomeActivity.class,
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    showToastSync("登录成功");
                 }
-                //异步请求相当于开辟一个子线程，要对主线程ui进行操作就需要再回到主线程，也可以用handle处理
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(s);
-                    }
-                });
-                navigateTo(HomeActivity.class);
+//                //异步请求相当于开辟一个子线程，要对主线程ui进行操作就需要再回到主线程，也可以用handle处理
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        showToast(s);
+//                    }
+//                });
             }
             @Override
             public void onFailure(Exception e) {
                 Log.e("===============请求失败",e.getMessage());
-                showToast("用户名或密码错误");
+                showToastSync("登录失败");
             }
         });
         //封装前的请求方式

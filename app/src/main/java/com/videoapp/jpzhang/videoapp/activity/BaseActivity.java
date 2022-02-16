@@ -44,11 +44,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         startActivity(in);
     }
 
-//    public void navigateToWithFlag(Class cls, int flags) {
-//        Intent in = new Intent(mContext, cls);
-//        in.setFlags(flags);
-//        startActivity(in);
-//    }
+    public void navigateToWithFlag(Class cls, int flags) {
+        Intent in = new Intent(mContext, cls);
+        in.setFlags(flags);
+        startActivity(in);
+    }
 
     protected void insertVal(String key, String val) {
         SharedPreferences sp = getSharedPreferences("sp_ttit", MODE_PRIVATE);

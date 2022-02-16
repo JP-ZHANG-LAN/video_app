@@ -44,8 +44,8 @@ public class Api {
     }
 
     public void postRequest(Context context, final TtitCallback callback) {
-//        SharedPreferences sp = context.getSharedPreferences("sp_ttit", MODE_PRIVATE);
-//        String token = sp.getString("token", "");
+        SharedPreferences sp = context.getSharedPreferences("sp_ttit", Context.MODE_PRIVATE);
+        String token = sp.getString("token", "");
         JSONObject jsonObject = new JSONObject(mParams);
         String jsonStr = jsonObject.toString();
         RequestBody requestBodyJson =
@@ -54,8 +54,8 @@ public class Api {
         //第三步创建Rquest
         Request request = new Request.Builder()
                 .url(requestUrl)
-//                .addHeader("contentType", "application/json;charset=UTF-8")
-//                .addHeader("token", token)
+                .addHeader("contentType", "application/json;charset=UTF-8")
+                .addHeader("token", token)
                 .post(requestBodyJson)
                 .build();
         //第四步创建call回调对象

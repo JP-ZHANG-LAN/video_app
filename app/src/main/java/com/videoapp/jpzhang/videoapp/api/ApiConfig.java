@@ -5,9 +5,9 @@ public class ApiConfig {
     //原作者服务器,时好时不好
 //    public static final String BASE_URl = "http://192.168.31.32:8080/renren-fast";
     //B站别人配置的远程服务器，可用
-//    public static final String BASE_URl ="http://47.112.180.188:8080/renren-fast";
+    public static final String BASE_URl ="http://47.112.180.188:8080/renren-fast";
     //本地ip，需要连接数据库和用renren-fast
-    public static final String BASE_URl ="http://192.168.164.1:8080/renren-fast";
+//    public static final String BASE_URl ="http://192.168.164.1:8080/renren-fast";
     public static final String LOGIN = "/app/login"; //登录
     public static final String REGISTER = "/app/register";//注册
     public static final String VIDEO_LIST_ALL = "/app/videolist/listAll";//所有类型视频列表
